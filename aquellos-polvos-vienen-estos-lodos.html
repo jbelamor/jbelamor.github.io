@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Joel Beleña | Cybersecurity</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="vendors/linericon/style.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="vendors/lightbox/simpleLightbox.css">
+    <link rel="stylesheet" href="vendors/nice-select/css/nice-select.css">
+    <link rel="stylesheet" href="vendors/animate-css/animate.css">
+    <link rel="stylesheet" href="vendors/popup/magnific-popup.css">
+    <link rel="stylesheet" href="vendors/flaticon/flaticon.css">
+    <!-- main css -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153339465-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-153339465-1');
+    </script>
+    
+  </head>
+  <body>
+
+ <!--================Header Menu Area =================-->
+    <header class="header_area">
+      <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar">
+	  <div class="container box_1620">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	    </button>
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="navbar-black" id="navbarSupportedContent">
+	      <ul class="nav navbar-nav menu_nav ml-auto">
+		<li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li> 
+	      </ul>
+	    </div> 
+	  </div>
+        </nav>
+      </div>
+    </header>
+    <!--================Header Menu Area =================-->
+
+      <!--================Home Banner Area =================-->
+    <section class="home_banner_area">
+      <div class="container box_1620">
+	<div>
+	  <h1 style="color:black">De aquellos polvos vienen estos lodos</h1>
+	  <h4>Cómo un leak de datos antiguos podría comprometer la seguridad de todos en la actualidad </h4>
+	  <h6>7 de Abril de 2020</h6>
+	</div>
+	<div style="max-width: 900px; text-align:justify; margin-top:35px">
+	  <p>Navegando hoy por Twitter, me he encontrado con el tweet de un usuario al que seguía y
+	  del que hacía mucho que no veía ninguna publicación. El contenido de este me ha sorprendido
+	    pues no aparenta tener ninguna lógica (y puede que no la tenga), pero como persona que
+	    le gustan los acertijos y que está pendiente de lo que sucede en las redes, especialmente
+	    todo lo relacionado con la ciberseguridad, he barrido para casa y me he puesto a pensar
+	    en los posibles significados del texto.</p>
+	  <img src="img/posts/07042020_tweet.png" style="display:block; width:70%; margin-left:auto; margin-right:auto;"/>
+	  <p style="margin-top:40px">Así, he empezado a barajar las siguientes opciones:</p>
+	  <ol type="a">
+	    <li><strike>Lo ha escrito sin querer o por error</strike> (lo descartamos automáticamente porque sino este post no tendría sentido)</li>
+	    <li>Es un acertijo escrito por el dueño y el tweet está codificado. Se podría hacer un análisis de frecuencias y ver si se corresponde con el alfabeto español.</li>
+	    <li>La cuenta ha podido ser comprometida, y están publicando en su nombre.</li>
+	    <li>Glitch en <span style="color:#008F11;">Matrix</span>.</li>
+	    <li>Es un <i>bot</i> y ha podido haber un fallo en el código de publicación.</li>
+	  </ol>
+	  <p>Sé que detrás de este Twitter hay una persona real, o al menos la había, pues nos conocemos
+	    en persona. Este es el primer tweet que publica en mucho tiempo. Anteriormente sólo hay un par de
+	    respuestas y varios RTs a cuentas grandes de fútbol y baloncesto.<br>
+	    A lo mejor es presuponer demasiado, pero no me cuadra que esta persona publicase un acertijo
+	    así por las buenas.<br>
+	    Y en medio de este análisis me acuerdo de una noticia reciente (6 de Abril, un día antes de
+	    la publicación del tweet) que decía que a información de un millón y medio de cuentas de
+	    usuario de la web <a target="_blank" href="https://www.xataka.com/seguridad/casi-1-5-millones-cuentas-htcmania
+				       -han-sido-hackeadas-contrasenas-robadas-estan-cifradas">HTCMania
+	      había sido comprometida.</a>
+	    <br>Aunque en el titular menciona que las contraseñas están cifradas, en realidad se encuentra
+	    almacenado el <i>hash</i> de la contraseña original. En un
+	    <a target="_blank" href="https://www.adslzone.net/noticias/seguridad/htcmania-hackeada-contrasenas-hash-md5/">artículo</a>
+	    de adslzone se habla mejor de la diferencia y lo que implica, pero no es lo que nos atañe en
+	    este artículo. ¿O sí?
+	  </p>
+	  <p>Cuando vi el <i>tweet</i> y habiendo leído esta noticia recientemente, me acordé de cómo unos cibercriminales utilizaban
+	    <a target="_blank" href="https://www.bleepingcomputer.com/news/security/russian-state-hackers-use-britney-spears-instagram-posts-to-control-malware/">
+	      Instagram para controlar malware</a> a través de comentarios en publicaciones de Britney
+	    Spears (a esto yo lo llamo <i>glamhacking</i>).</p>
+	  <p>Y entonces juntando estas piezas pensé, ¿y si debido el compromiso de HTCMania, alguien que se
+	    haya hecho con la base de datos se han puesto a <i>crackear</i> <i>hashes</i>, obteniendo una serie de contraseñas
+	    y entre ellas, estaba la de este usuario de Twitter, que estaba usando las mismas credenciales para
+	    HTCMania y Twitter, utilizando su cuenta para mandar comandos a los <i>bots</i> de una <i>botnet</i> (por ejemplo)?</p>
+	  <p>Esta teoría, aunque no necesariamente cierta, tiene sentido cuando se analiza el contexto de la situación:</p>
+	  <ul>
+	    <li>HTCMania surgió allá por el 2007. Por aquel entonces la seguridad informática y utilizar
+	      contraseñas robustas no era algo muy común.</li>
+	    <li>Twitter se fundó en el 2006, y en España se popularizó alrededor del 2011.</li>
+	    <li>Cuando se pasó la expectación, mucha gente dejó su cuenta abandonada con su contraseña del 2011.</li>
+	    <li>Ha sido (y sigue siendo) bastante común usar la misma contraseña y email para varias webs.</li>
+	  </ul>
+	  <p>Y las estadísticas de la fuga de datos:</p>
+	  <ul>
+	    <li>1611244 registros de usuarios totales (habría que excluir).</li>
+	    <li>1814975 registros de historiales de contraseñas.</li>
+	    <li>De una muestra de 154273 y sin un equipo especializado, a lo largo del día de hoy se han conseguido <i>crackear</i> un total de <b>37000 contraseñas</b>.</li>
+	  </ul>
+	  <p>No me parece descabellado pensar que de más de 37000 cuentas, no haya al menos algunos cientos de casos
+	    en los que las credenciales puedan ser reutilizadas en tantos otros servicios con fines maliciosos, facilitando
+	    la labor a los cibercriminales que podrían utilizar esos servicios para difamación, distribución de malware o
+	    dar instrucciones a equipos infectados.</p>
+	  <h3>Conclusiones</h3>
+	  <p>En algún momento perdimos el control. Es prácticamente imposible saber la cantidad de cuentas
+	    en distintas páginas que tenemos creadas. Y a cualquiera que le preguntes, es muy probable que
+	    te diga que hasta le da igual ¿qué más nos dará la cuenta que habíamos creado en una página
+	    de recetas de cocina para participar en el sorteo de una manga pastelera? Según qué servicios,
+	    y quién seas, puede ser un problema para tu reputación, pero en la mayoría de los casos es irrelevante.<br>
+	    Sea cual sea la situación de cada uno, esta combinación de factores deja a los ciberdelincuentes las
+	    puertas abiertas para llevar a cabo sus acciones de manera encubierta. Y pienso yo <b>¿no es acaso
+	      responsabilidad de todos hacer de internet un sitio más seguro?</b> Igual que en el caso de una pandemia,
+	    todos nos preocupamos por quedarnos en nuestra casa, minimizar nuestra presencia fuera de casa y los
+	    contactos con otros, para en definitiva, protegernos a todos.<br>
+	    ¿No sería lógico que en internet actuásemos de una manera más cautelosa, siendo conscientes de aquello que
+	    hacemos y cómo podría repercutir en tu seguridad, la mía y la de todos?
+	  </p>
+	  <p>Es muy probable que no podamos cambiar algunas cosas que hicimos en el pasado, pero podemos cambiar
+	    nuestra forma de actuar de ahora en adelante.<br>
+	    La seguridad al 100% no existe y los ciberdelincuentes seguirán encontrando la manera de saltarse los controles,
+	    pero igual que en el mundo físico nos preocupamos por nuestra información, el cerrar la puerta y echar la llave,
+	    debemos preocuparnos de hacer lo propio en el mundo virtual.</p>
+	  <h3>Recomendaciones</h3>
+	  <p>Las recomendaciones no han cambiado, siguen siendo las mismas, ahora sólo tenemos que empezar a aplicarlas.
+	    Estos son mis consejos para construir una contraseña robusta y fácil de recordar:</p>
+	  <ol>
+	    <li>Elije dos o tres sustantivos o verbos. Si alguno está relacionado con el servicio donde te vas a registrar mejor.</li>
+	    <p>Por ejemplo, para el banco: beber y <i>soldi</i> (dinero en italiano. Si mezclas palabras de varios idiomas
+	      o te las inventas, mejor).</p>
+	    <li>Forma una frase que te resulte fácil de memorizar.</li>
+	    <p>Por ejemplo: bebanse el soldi ya</p>
+	    <li>Añade algún número o símbolo si quieres hacerla más robusta</li>
+	    <p>Por ejemplo: "bebanseelsoldi,YA!". Hemos conseguido una contraseña de 18 caracteres, que combina palabras
+	      de varios idiomas, que no tienen sentido semánticamente, contiene símbolos, mayúsusculas y minúsculas y es
+	      fácil de memorizar.</p>
+	  </ol>
+	  <p>Otros consejos:</p>
+	  <ul>
+	    <li>Utiliza servicios de correos temporales para registrarte en servicios no relevantes</li>
+	    <p><a target="_blank" href="https://www.guerrillamail.com">Guerrilla Mail</a> o <a target="_blank" href="https://10minutemail.com/">10minutemail</a>
+	      son algunos ejemplos, pero hay más</p>
+	    <li>Explora tu email en busca de correos de sitios donde te hayas creado cuentas, busca términos clave
+	      como: "Activación de cuenta", "Verificación de cuenta" o "Confirmación de registro"; y date de baja de algunos de ellos.
+	      Marie Kondo estará contenta.</li>
+	  </ul>
+	</div>
+      </div>
+    </section>
+    <!--================End Home Banner Area =================-->
+    
+    
+    <!--================Footer Area =================-->
+    <footer class="footer_area p_120">
+      <div class="container">
+        <div class="row footer_inner">
+          <div class="col-lg-6">
+            <aside class="f_widget social_widget">
+              <div class="f_title">
+        	<h3>Follow Me</h3>
+              </div>
+              <p>Let us be social</p>
+              <ul class="list">
+		<li><a target="_blank" href="https://github.com/jbelamor"><i class="fa fa-github"></i></a></li>
+		<li><a target="_blank" href="https://twitter.com/Jow_BL"><i class="fa fa-twitter"></i></a></li>
+		<li><a target="_blank" href="https://www.linkedin.com/in/joelbelena/?locale=en_US"><i class="fa fa-linkedin"></i></a></li>
+              </ul>
+            </aside>
+	    <br><br><br>
+	    <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a target="_blank" href="https://colorlib.com" target="_blank">Colorlib</a></p>
+          </div>
+      </div>
+    </footer>
+    <!--================End Footer Area =================-->
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/stellar.js"></script>
+    <script src="vendors/lightbox/simpleLightbox.min.js"></script>
+    <script src="vendors/nice-select/js/jquery.nice-select.min.js"></script>
+    <script src="vendors/isotope/imagesloaded.pkgd.min.js"></script>
+    <script src="vendors/isotope/isotope.pkgd.min.js"></script>
+    <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
+    <script src="vendors/popup/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery.ajaxchimp.min.js"></script>
+    <script src="vendors/counter-up/jquery.waypoints.min.js"></script>
+    <script src="vendors/counter-up/jquery.counterup.min.js"></script>
+    <script src="js/mail-script.js"></script>
+    <script src="js/theme.js"></script>
+  </body>
+</html>
