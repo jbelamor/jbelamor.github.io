@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Joel Beleña | Cybersecurity</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="vendors/linericon/style.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="vendors/lightbox/simpleLightbox.css">
+    <link rel="stylesheet" href="vendors/nice-select/css/nice-select.css">
+    <link rel="stylesheet" href="vendors/animate-css/animate.css">
+    <link rel="stylesheet" href="vendors/popup/magnific-popup.css">
+    <link rel="stylesheet" href="vendors/flaticon/flaticon.css">
+    <!-- main css -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153339465-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-153339465-1');
+    </script>
+    
+  </head>
+  <body>
+
+ <!--================Header Menu Area =================-->
+    <header class="header_area">
+      <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar">
+	  <div class="container box_1620">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	    </button>
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="navbar-black" id="navbarSupportedContent">
+	      <ul class="nav navbar-nav menu_nav ml-auto">
+		<li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li> 
+	      </ul>
+	    </div> 
+	  </div>
+        </nav>
+      </div>
+    </header>
+    <!--================Header Menu Area =================-->
+
+      <!--================Home Banner Area =================-->
+    <section class="home_banner_area" style="margin-top:-50px">
+      <div class="container box_1620">
+		<div>
+		  <h1 style="color:black">Catching a XSS at Elementor</h1>
+		  <h4>Hunting and exploiting an XSS in Elementor &lt;3.1.4</h4>
+		  <h6>March 23th 2021</h6>
+		</div>
+		<div style="max-width: 900px; text-align:justify; margin-top:35px">
+		  <h3>Introduction</h3>
+		  <p>Elementor is a plugin for building websites for wordpress present in more than 5 million sites.</p>
+		  <p>
+			<b>Title:</b> Reflected Cross-Site-Scripting (XSS)<br>
+			<b>Affected component:</b> lightbox<br>
+			<b>CVE:</b> pending<br>
+			<b>Vulnerable Versions:</b> 1.5.0 &gt; x &lt; 3.1.4<br>
+			<b>CVSSv3 Value:</b> 4.3<br> 
+			<b>CVSSv3 Vector:</b> <a href="https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:L/A:N&version=3.1">AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:L/A:N</a>
+		  </p>
+		  <p>
+			Wordpress link: <a href="https://wordpress.org/plugins/elementor/">elementor</a><br> 
+			Site: <a href="https://elementor.com/">elementor.com</a><br>
+		  </p>
+		  <br>
+		  <h3>TL;DR</h3>
+		  <p>An unauthenticated user can inject arbitrary JavaScript code in the URL of a web which is using Elementor.</p>
+		  <p>To exploit this vulnerability, it is needed a web page using Elementor or Elementor Pro running the JavaScript file "fronten.min.js" with a version higher than 1.5 and lower than 3.1.4.</p>
+		  <p>The affected resource is <b>#elementor-action:action=lightbox&amp;settings=</b> and the payload will be encoded in base64 as a value for the settings variable. An example of this could be:</p>
+		  <div class="card">
+			<div class="card-body">
+			  https://vulnerablesite.com/#elementor-action:action=lightbox&settings=eyJ0eXBlIjoibnVsbCIsImh0bWwiOiI8c2NyaXB0PmFsZXJ0KCd4c3MnKTwvc2NyaXB0PiJ9
+			</div>
+		  </div>
+		  <p>The base64 string is an encoded JSON with the following structure:
+		  <pre><code>
+			  {
+			  "type":"null",
+			  "html":"&lt;script&gt;alert('xss')&lt;/script&gt;"
+			  }
+		  </code></pre></p>
+		  <p>Inside the value "HTML" is where the payload would be stored. After injecting the desired payload, the JSON should be encoded back to base64 and attach it to the aforementioned URL.</p>
+		  <br>
+		  <h3>Hunting the vuln - Technical details</h3>
+		  <p>Everything started with a suspicious URL during the audit of a client's web page. This URL was looking something like:</p>
+		  <div class="card">
+			<div class="card-body">
+			  https://vulnerablesite.com/avulnerableresource/#elementor-action:action=lightbox&settings=eyJ0eXBlIjoidmlkZW8iLCJ1cmwiOiJodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PWRRdzR3OVdnWGNRIn0=
+			</div>
+		  </div>
+		  <p>The base64 in the variable settings updated me and after decoding it I could see the following JSON:
+			<pre><code>
+				{
+				"type":"video",
+				"url":"https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+				}
+		  </code></pre></p>
+		  <p>After some tests, I could see that it was possible to change the URL of the video and force the web page to render whichever video I wanted, so I figured out that the content of the variables was not being checked in the server, but n the client-side. With this information I started wondering if it was possible to inject something else apart from videos. So I opened the "Developer Tools", and went to the section "Debugger", where it is possible to search for a string in all the available source files.</p>
+		  <img src="img/posts/xss-elementor/developer_tools.png" style="display:block; width:70%; margin-left:auto; margin-right:auto;"/>
+		  <p>Knowing that somewhere in the code the base64 encoded JSON needs to be decoded, I searched for the function used in JavaScript for this purpose: atob (the encoding function is called btoa).</p>
+		  <img src="img/posts/xss-elementor/atob.png" style="display:block; width:70%; margin-left:auto; margin-right:auto;"/>
+		  <p>This led me to the following section of code:</p>
+		  <img src="img/posts/xss-elementor/atob_code.png" style="display:block; width:70%; margin-left:auto; margin-right:auto;"/>
+		  <p>At this point, I decided to set a breakpoint in this line and refresh the web page so I could trace the execution of the code and how the JSON was being used. After some time diving into the code and re-refreshings of the site, I finally got to the section of the code which was interesting for me.</p>
+		  <img src="img/posts/xss-elementor/switch_1.png" style="display:block; width:70%; margin-left:auto; margin-right:auto;"/>
+		  <p>What this switch is doing is filtering the received arguments set in the JSON and executing a different code depending on the value of "type". In pseudocode it would looks something like this:
+			<pre class="prettyprint"><code>
+				json_decoded = decodeBase64(settings);
+				type = json_decoded['type'];
+				switch(type){
+				    case type == 'video':
+				        modal.showVideo();
+				        stop;
+				    case type == 'image':
+				        modal.setImage();
+				        continuetothefollowingcase;
+				    case type == 'slideshow':
+				        modal.showImages();
+				        stop;
+				    case type != 'video' & type != 'image' & type != 'slideshow':
+				        modal.setHTMLContent(json_decoded['html'])
+				}
+		  </code></pre></p>
+		  <p>From this section, we can see that if the "type" value defined in the JSON is not: video, image or slideshow; then, the HTML of the modal to be shown will be set with the value of the element defined in the JSON with the key "html". Thus, to exploit this vulnerability, the steps are the following:</p>
+		  <ol>
+			<li>Set a value for "type" different than image, video or slideshow</li>
+			<li>Create a key called "html" containing the payload to be injected</li>
+			<li>Encode the JSON in base64</li>
+			<li>Add it to the link</li>
+			<li>Ready to exploit</li>
+		  </ol>
+		  <br>
+		  <h3>Remediation</h3>
+		  <p>This vulnerability has been fixed in the version 3.1.4. If you are using elementor to build your site, I would recommend you to upgrade to the last version, more vulnerabilities have been identified for the version 3.1.3 (<a href="https://www.wordfence.com/blog/2021/03/cross-site-scripting-vulnerabilities-in-elementor-impact-over-7-million-sites/">auth stored xss</a>)</p>
+		  <p>To fix the vulnerability, the developer team have removed the "default case" in the switch (<a href="https://github.com/elementor/elementor/blob/v3.1.3/assets/dev/js/frontend/utils/lightbox/lightbox.js#L165">line 165</a>).</p>
+		  <br>
+		  <h3>Timeline</h3>
+		  <p>
+			<b>February 25th, 2021:</b> Discovery of the vulnerability and report to Elementor Security Team<br>
+			<b>March 4th, 2021:</b> Report to Wordpress Security Team<br>
+			<b>March 5th, 2021:</b> Response from Wordpress and Elementor Security Team<br>
+			<b>March 10th, 2021:</b> Vulnerability fixed in version 3.1.4 <br>
+		  </p>
+		</div>
+      </div>
+    </section>
+    <!--================End Home Banner Area =================-->
+    
+    
+    <!--================Footer Area =================-->
+    <footer class="footer_area p_120">
+      <div class="container">
+        <div class="row footer_inner">
+          <div class="col-lg-6">
+            <aside class="f_widget social_widget">
+              <div class="f_title">
+        	<h3>Follow Me</h3>
+              </div>
+              <p>Let us be social</p>
+              <ul class="list">
+		<li><a target="_blank" href="https://github.com/jbelamor"><i class="fa fa-github"></i></a></li>
+		<li><a target="_blank" href="https://twitter.com/Jow_BL"><i class="fa fa-twitter"></i></a></li>
+		<li><a target="_blank" href="https://www.linkedin.com/in/joelbelena/?locale=en_US"><i class="fa fa-linkedin"></i></a></li>
+              </ul>
+            </aside>
+	    <br><br><br>
+	    <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a target="_blank" href="https://colorlib.com" target="_blank">Colorlib</a></p>
+          </div>
+      </div>
+    </footer>
+    <!--================End Footer Area =================-->
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/stellar.js"></script>
+    <script src="vendors/lightbox/simpleLightbox.min.js"></script>
+    <script src="vendors/nice-select/js/jquery.nice-select.min.js"></script>
+    <script src="vendors/isotope/imagesloaded.pkgd.min.js"></script>
+    <script src="vendors/isotope/isotope.pkgd.min.js"></script>
+    <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
+    <script src="vendors/popup/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery.ajaxchimp.min.js"></script>
+    <script src="vendors/counter-up/jquery.waypoints.min.js"></script>
+    <script src="vendors/counter-up/jquery.counterup.min.js"></script>
+    <script src="js/mail-script.js"></script>
+    <script src="js/theme.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  </body>
+</html>
