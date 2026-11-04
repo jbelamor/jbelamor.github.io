@@ -61,18 +61,40 @@ function setupFilter() {
     clearBtn.hidden = !category;
   }
 
+  const validCategories = Array.from(categoryButtons, (btn) => btn.dataset.category);
+
+  function categoryFromHash() {
+    const hash = decodeURIComponent(window.location.hash.slice(1));
+    return validCategories.includes(hash) ? hash : null;
+  }
+
+  function setCategory(category) {
+    activeCategory = category;
+    applyFilter(category);
+
+    // Refleja la categoría en la URL (#hacker, #visual-artist...) sin añadir entradas al historial
+    const url = window.location.pathname + window.location.search + (category ? `#${category}` : '');
+    history.replaceState(null, '', url);
+  }
+
   categoryButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
       const category = btn.dataset.category;
-      activeCategory = activeCategory === category ? null : category;
-      applyFilter(activeCategory);
+      setCategory(activeCategory === category ? null : category);
     });
   });
 
-  clearBtn.addEventListener('click', () => {
-    activeCategory = null;
-    applyFilter(null);
+  clearBtn.addEventListener('click', () => setCategory(null));
+
+  // Si alguien cambia el hash a mano o pega otro enlace en la misma pestaña
+  window.addEventListener('hashchange', () => {
+    activeCategory = categoryFromHash();
+    applyFilter(activeCategory);
   });
+
+  // Filtro inicial a partir del enlace compartido
+  activeCategory = categoryFromHash();
+  applyFilter(activeCategory);
 }
 
 initHome();
